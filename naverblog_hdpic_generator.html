@@ -3,12 +3,12 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
+    <link href="fontawesome-free-5.15.3-web/css/all.css" rel="stylesheet">
     <script src="js/jquery-3.6.0.js"></script>
     <link href="bootstrap-5.0.0-dist/css/bootstrap.css" rel="stylesheet">
     <script src="bootstrap-5.0.0-dist/js/bootstrap.bundle.js"></script>
     <script src="sweetalert2-10.16.7/dist/sweetalert2.all.js"></script>
-    
+
     <script src="js/nvb_hdpic_generator.js"></script>
     <title>Naver Blog高畫質圖片網址轉換工具</title>
 </head>
@@ -24,6 +24,59 @@
     #example label {
         cursor: pointer;
     }
+
+    /*IMG HOVER BTN*/
+    .imgdiv {
+        position: relative;
+        width: 200px;
+        display: inline-block;
+    }
+
+    .image {
+        opacity: 1;
+        display: block;
+        width: 100%;
+        height: auto;
+        transition: .5s ease;
+        backface-visibility: hidden;
+    }
+
+    .topright {
+        transition: .5s ease;
+        opacity: 0;
+        position: absolute;
+        top: 0%;
+        right: 0%;
+        transform: translate(-0%, -0%);
+        -ms-transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .imgdiv:hover .image {
+        opacity: 0.6;
+    }
+
+    .imgdiv:hover .topright {
+        opacity: 1;
+    }
+
+    .deleteimg {
+        background-color: #ff5555;
+        color: white;
+        font-size: 16px;
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        cursor: pointer;
+        border-radius: 0 0 0px 3px;
+    }
+
+    .deleteimg:hover {
+        background-color: #e64d4d;
+    }
+
+    /*-----------------------------------*/
+
 </style>
 
 <body>
@@ -33,28 +86,31 @@
                 <!--input-->
                 <div class="row col-8 g-2">
                     <div class="col">
-                        <textarea id="addresses" class="form-control" rows="10"></textarea>
+                        <textarea id="addresses" class="form-control" rows="10" style="font-size: 10px"></textarea>
                     </div>
                 </div>
                 <!--setting-->
                 <div class="row col-6 g-2">
                     <div class="col-auto">
-                        <button class="btn btn-primary" id="ok">OK</button>
+                        <button class="btn btn-primary" id="ok">轉換</button>
                     </div>
                     <div class="col-auto">
                         <button class="btn btn-primary" id="reset">Reset</button>
                     </div>
                 </div>
+
                 <!--result-->
-                <label id="result_count"></label>
                 <div class="row col-8 g-2" style="">
                     <div class="col">
-                        <textarea id="output" class="form-control" rows="10"></textarea>
+                        <textarea id="output" class="form-control" rows="10" style="font-size: 10px"></textarea>
                     </div>
                 </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary" id="reload">重新載入</button>
+                </div>
+                <label id="result_count"></label>
                 <hr>
                 <div id="output_img">
-                    
                 </div>
             </div>
         </div>
