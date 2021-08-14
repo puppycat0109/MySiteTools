@@ -50,15 +50,24 @@ $(document).ready(function () {
         }
         let result;
         let result_S;
+        let result2;
+        let result2_S;
         result = "dl.stickershop.line.naver.jp/products/0/0/1/" + STCKID + "/iphone/stickers@2x.zip";
         result_S = "dl.stickershop.line.naver.jp/products/0/0/1/" + STCKID + "/iphone/stickerpack@2x.zip";
+        
+        result2 = "https://stickershop.line-scdn.net/stickershop/v1/product/" + STCKID + "/iphone/stickers@2x.zip";
+        result2_S = "https://stickershop.line-scdn.net/stickershop/v1/product/" + STCKID + "/iphone/stickerpack@2x.zip";
 
         if ($("#sticker-type").val() == "nor") {
             $('#output').val(result);
             $('#output-link').attr("href", "http://" + result);
+            $('#output2').val(result2);
+            $('#output-link2').attr("href", result2);
         } else if ($("#sticker-type").val() == "spe") {
             $('#output').val(result_S);
             $('#output-link').attr("href", "http://" + result_S);
+            $('#output2').val(result2_S);
+            $('#output-link2').attr("href", result2_S);
         }
 
 
