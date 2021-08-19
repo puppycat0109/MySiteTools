@@ -3,81 +3,93 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <script src="js/jquery-3.6.0.js"></script>
     <link href="bootstrap-5.0.0-dist/css/bootstrap.css" rel="stylesheet">
     <script src="bootstrap-5.0.0-dist/js/bootstrap.bundle.js"></script>
     <script src="sweetalert2-10.16.7/dist/sweetalert2.all.js"></script>
-    
+
     <script src="js/line_sticker_downloader.js"></script>
-    <title>line_sticker_downloader</title>
+    <title>LINE貼圖下載工具</title>
 </head>
 <style>
+    html {
+        background: #363f50;
+    }
+
     body {
         font-family: "微軟正黑體";
+        background: none;
+    }
+
+    input::placeholder {
+        /* CSS 3 標準 */
+        color: #b7b7b7 !important;
     }
 
     .row {
         margin-bottom: 1rem;
     }
-
-    #example label {
-        cursor: pointer;
+    #message{
+        color: #fff;
     }
+    #message.showmsg{
+        color: #0d6efd !important;
+        transition: 0.5s;
+    }
+
 </style>
 
 <body>
-    <div class="container mt-5">
-        <div class="card">
-            <div class="card-body">
-                <!--example-->
-                <div class="row" id="example">
-                    <h3>[EXAMPLE 1]</h3>
-                    <p>一般貼圖</p>
-                    <p>dl.stickershop.line.naver.jp/products/0/0/1/[ID]/iphone/stickers@2x.zip</p>
-                    <p>特殊貼圖</p>
-                    <p>dl.stickershop.line.naver.jp/products/0/0/1/[ID]/iphone/stickerpack@2x.zip</p>
-                    <h3>[EXAMPLE 2]</h3>
-                    <p>一般貼圖</p>
-                    <p>https://stickershop.line-scdn.net/stickershop/v1/product/[ID]/iphone/stickers@2x.zip</p>
-                    <p>特殊貼圖</p>
-                    <p>https://stickershop.line-scdn.net/stickershop/v1/product/[ID]/iphone/stickerpack@2x.zip</p>
-                </div>
-                <!--input-->
-                <div class="row col-3 g-2">
-                    <div class="col">
-                        <input id="sticker-id" class="form-control" />
+    <div class="container mt-3">
+        <div class="card" style="border-radius: 10px">
+            <div class="card-body p-5">
+                <h1 class="card-title mb-3">LINE貼圖下載工具</h1>
+                <hr>
+                <!--setting-->
+                <div class="row col-12 g-2 mt-4">
+                    <div class="col-auto">
+                        <select id="sticker-type" class="form-select">
+                            <option value="nor">一般貼圖</option>
+                            <option value="spe">特殊貼圖</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <input id="sticker-id" placeholder="貼圖ID" class="form-control" />
                     </div>
                     <div class="col-auto">
                         <button class="btn btn-primary" id="ok">OK</button>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-primary" id="reset">Reset</button>
+                        <button class="btn btn-primary" id="reset">重置</button>
                     </div>
                 </div>
-                <!--setting-->
-                <div class="row col-6 g-2">
-                    <div class="col-md-3">
-                        <select id="sticker-type" class="form-select">
-                            <option value="nor">normal</option>
-                            <option value="spe">special</option>
-                        </select>
-                    </div>
-                </div>
+
                 <!--result-->
-                <div class="row col-8 g-2 result-area">
-                    <label class="col-auto col-form-label">Link</label>
-                    <div class="col">
-                        <input type="text" id="output" class="form-control" />
-                    </div>
-                    <a href="" class="btn btn-primary col-auto output-link" id="output-link">Download</a>
+                
+                <span id="message" class="">　</span>
+                <div class="row col-12 g-2 result-area">
+                    <label class="col-auto col-form-label">Link 1</label>
+                    <div class="col-sm-6"><input type="text" id="output" class="form-control col-4" readOnly /></div>
+                    <a href="" class="btn btn-primary col-auto output-link" id="output-link" target="_blank">下載</a>
                 </div>
-                <div class="row col-8 g-2 result-area">
-                    <label class="col-auto col-form-label">Link2</label>
-                    <div class="col">
-                        <input type="text" id="output2" class="form-control" />
+                <div class="row col-12 g-2 result-area">
+                    <label class="col-auto col-form-label">Link 2</label>
+                    <div class="col-sm-6"><input type="text" id="output2" class="form-control" readOnly />
                     </div>
-                    <a href="" class="btn btn-primary col-auto output-link" id="output-link2">Download</a>
+                    <a href="" class="btn btn-primary col-auto output-link" id="output-link2" target="_blank">下載</a>
+                </div>
+                <span style="font-size: 0.8rem;color: #ff6464;">* 如果Link 1沒有反應再試Link 2</span>
+
+                <!--example-->
+                <div class="row border px-2 py-4 mx-0 mb-0 mt-5 " id="example" style="font-size: 0.9rem;border-radius: 10px;background: #f5f5f5;color: #666;">
+                    <p style="font-weight: bold;">貼圖下載網址範例</p>
+                    <h5 style="font-weight: bold;">[EXAMPLE 1]</h5>
+                    <p>【一般貼圖】dl.stickershop.line.naver.jp/products/0/0/1/[ID]/iphone/stickers@2x.zip</p>
+                    <p>【特殊貼圖】dl.stickershop.line.naver.jp/products/0/0/1/[ID]/iphone/stickerpack@2x.zip</p>
+                    <h5 style="font-weight: bold;">[EXAMPLE 2]</h5>
+                    <p>【一般貼圖】https://stickershop.line-scdn.net/stickershop/v1/product/[ID]/iphone/stickers@2x.zip</p>
+                    <p>【特殊貼圖】https://stickershop.line-scdn.net/stickershop/v1/product/[ID]/iphone/stickerpack@2x.zip</p>
                 </div>
             </div>
         </div>

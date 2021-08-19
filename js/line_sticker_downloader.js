@@ -7,6 +7,15 @@ $(document).ready(function () {
     $('#ok').on('click', function () {
         getURLs($input.val());
     });
+    
+    $("#sticker-id").on("change",function(){
+        getURLs($input.val());
+    });
+    $("#sticker-type").on("change",function(){
+        if($("#sticker-id").val() != ""){
+            getURLs($input.val());
+        }
+    });
 
     /**RESET BTN*/
     $('#reset').on('click', function () {
@@ -39,10 +48,15 @@ $(document).ready(function () {
 
     /**重置*/
     function reset() {
-
+        $("#sticker-type").val("nor");
+        $("#sticker-id").val("");
+        $("#output").val("");
+        $("#output2").val("");
+        $("#message").text("　");
+        $('#message').removeClass("showmsg");
     }
 
-    /**取得封面圖片網址*/
+    /**取得網址*/
     function getURLs(STCKID) {
 
         if (!STCKID) {
@@ -54,7 +68,7 @@ $(document).ready(function () {
         let result2_S;
         result = "dl.stickershop.line.naver.jp/products/0/0/1/" + STCKID + "/iphone/stickers@2x.zip";
         result_S = "dl.stickershop.line.naver.jp/products/0/0/1/" + STCKID + "/iphone/stickerpack@2x.zip";
-        
+
         result2 = "https://stickershop.line-scdn.net/stickershop/v1/product/" + STCKID + "/iphone/stickers@2x.zip";
         result2_S = "https://stickershop.line-scdn.net/stickershop/v1/product/" + STCKID + "/iphone/stickerpack@2x.zip";
 
@@ -69,8 +83,8 @@ $(document).ready(function () {
             $('#output2').val(result2_S);
             $('#output-link2').attr("href", result2_S);
         }
-
-
+        $('#message').text("已產生 "+$("#sticker-id").val()+" " +$("#sticker-type option:selected").text());
+        $('#message').attr("class", "showmsg");
     }
 
 
