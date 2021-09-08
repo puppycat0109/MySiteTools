@@ -100,13 +100,16 @@ var templist = $(".se_component_wrap.sect_dsc.__se_component_area img").map(func
 var result = "";
 var count = 0;
 for(var i = 0; i < templist.length; i++ ){
-   if(templist[i].indexOf('https://storep-phinf.pstatic.net') >= 0){
+   if(templist[i].indexOf('storep-phinf.pstatic.net') >= 0){
         //過濾貼圖
    }
-    else{
+   else if(templist[i].indexOf('dthumb-phinf.pstatic.net') >= 0){
+        //過濾影片封面
+   }
+   else{
         result += templist[i] + "\r\n" ;
         count = count + 1;
-    }
+   }
 }
 console.log("共 " + count + " 張");
 console.log(result);</pre>
