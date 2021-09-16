@@ -1,0 +1,12 @@
+{
+  name YouTube Thumbnails Downloader,
+  short_name YT Thumbs Down,
+  lang zh-TW,
+  start_url httpspuppycat0109.github.ioMySiteToolsyoutube_thumbnail_generator.html,
+  display standalone,
+  icons [
+    {
+      src yt_icon
+    }
+  ]
+}
