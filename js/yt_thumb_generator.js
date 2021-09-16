@@ -164,6 +164,11 @@ default thumbnail list:
         /**產生圖片EVENT*/
         $('#ok').on('click', function () {
             getImgURL($('#yt-address').val());
+            gtag('event', 'click', {
+                'event_name' : 'YT_Thumb_OK',
+              'event_category' : 'YT_Thumb',
+              'event_label' : 'YT_Thumb'
+            });
         });
         $('#files-type, #files-size').on("change", function () {
             getImgURL($('#yt-address').val());
