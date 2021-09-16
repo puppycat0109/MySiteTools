@@ -2,60 +2,105 @@
 <html>
 
 <head>
+    <!--common-->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link href="fontawesome-free-5.15.3-web/css/all.css" rel="stylesheet">
     <script src="js/jquery-3.6.0.js"></script>
     <link href="bootstrap-5.0.0-dist/css/bootstrap.css" rel="stylesheet">
     <script src="bootstrap-5.0.0-dist/js/bootstrap.bundle.js"></script>
     <script src="sweetalert2-10.16.7/dist/sweetalert2.all.js"></script>
-    
-    <script src="js/yt_thumb_generator.js"></script>
-    <title>Page Title</title>
+    <!--common-->
+
+    <script src="js/yt_thumb_generator.js?version=2.0"></script>
+
+    <title>YouTube封面下載工具</title>
 </head>
 <style>
+    html {
+        background: #d4abab;
+    }
+
     body {
         font-family: "微軟正黑體";
+        background: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        /* CSS 3 標準 */
+        color: #b7b7b7 !important;
     }
 
     .row {
         margin-bottom: 1rem;
     }
 
+    .card-body {
+        padding: 3rem;
+    }
+
+    #message {
+        color: #fff;
+    }
+
+    #message.showmsg {
+        color: #0d6efd !important;
+        transition: 0.5s;
+    }
+
+    #example ul {
+        margin: 0 12px;
+    }
+
+    #example li {}
+
     #example label {
         cursor: pointer;
+        word-break: break-all;
     }
+
+    #example label:hover {
+        color: cornflowerblue;
+    }
+
+    @media (max-width:900px) {
+        .card-body {
+            padding: 1.5rem 1rem;
+        }
+    }
+
+    .form-select {
+        width: auto;
+        display: inline-block;
+    }
+
 </style>
 
 <body>
-    <div class="container mt-5">
-        <div class="card">
+    <div class="container mt-3">
+        <div class="card" style="border-radius: 10px">
             <div class="card-body">
-                <!--example-->
-                <div class="row" id="example">
-                    <h3>[EXAMPLE]</h3>
-                    <label>https://www.youtube.com/watch?v=mZ-crmiQ7is</label>
-                    <label>https://www.youtube.com/watch?v=mZ-crmiQ7is&t=4s</label>
-                    <label>https://youtu.be/mZ-crmiQ7is</label>
-                    <label>https://www.youtube.com/watch?v=mZ-crmiQ7is&list=PLCDQLFft8AGjYIpetpQ4ZeuJ7-I68qE6Y&index=1</label>
-                    <label>https://youtu.be/mZ-crmiQ7is?t=1</label>
-                </div>
+                <h1 class="card-title mb-3" style="font-weight: bold">YouTube封面下載工具</h1>
+                <hr>
                 <!--input-->
-                <div class="row col-8 g-2">
-                    <div class="col">
-                        <textarea id="yt-address" class="form-control" rows="1"></textarea>
+                <div class="row col-md-12">
+                    <div class="col-md-8">
+                        <textarea id="yt-address" class="form-control" rows="1" style="resize: both;max-width: 100%;" placeholder="YouTube影片網址"></textarea>
                     </div>
                 </div>
                 <!--setting-->
-                <div class="row col-6 g-2">
-                    <div class="col-md-3">
-
-                        <select id="files-type" class="form-select">
+                <div class="row col-md-8">
+                    <div class="col-auto my-1">
+                        <label class="col-auto col-form-label">圖檔格式</label>
+                        <select id="files-type" class="form-select" style="width: 120px">
                             <option value="webp">webp</option>
                             <option value="jpg">jpg</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <select id="files-size" class="form-select">
+                    <div class="col-auto my-1">
+                        <label class="col-auto col-form-label">圖檔大小</label>
+                        <select id="files-size" class="form-select" style="width: 120px">
                             <option value="maxres">MAX</option>
                             <option value="sd">SD</option>
                             <option value="mq">MQ</option>
@@ -63,24 +108,40 @@
                             <option value="default">MIN</option>
                         </select>
                     </div>
-                    <div class="col-auto">
-                        <button class="btn btn-primary" id="ok">OK</button>
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-primary" id="reset">Reset</button>
+                    <div class="col-auto my-1">
+                        <button class="btn btn-primary" id="ok"><i class="fas fa-check"></i> 確定</button>
+                        <button class="btn btn-secondary" id="reset"><i class="fas fa-sync-alt"></i> 重置</button>
                     </div>
                 </div>
                 <!--result-->
-                <div class="row col-8 g-2 result-area">
-                    <label class="col-auto col-form-label">Link</label>
-                    <div class="col">
-                        <input type="text" id="output-maxres" class="form-control" />
+                <div class="row col-md-8 g-2 result-area">
+                    <!--<label class="col-auto col-form-label">封面圖片網址</label>-->
+                    <div class="col-md-8">
+                        <input type="text" id="output-maxres" class="form-control" placeholder="封面圖片網址" readOnly />
                     </div>
-                    <a href="" class="btn btn-primary col-auto output-link" id="output-link-maxres">Download</a>
+                    <a href="" target="_blank" class="btn btn-primary col-auto output-link" id="output-link-maxres"><i class="fas fa-external-link-alt"></i> 新分頁開啟圖片</a>
                     <label id="maxres-size"></label>
+
                 </div>
+
+                <span id="result-hint" class="my-2" style="font-size: 0.8rem;color: #ff6464;display: none">* PC右鍵另存圖片 / Mobile長按另存圖片</span>
+
                 <div class="row col result-area">
                     <img id="output-img-maxres" src="" style="width: auto" />
+                </div>
+                <!--example-->
+                <div class="row border px-2 py-4 mx-0 mb-0 mt-5 " id="example" style="font-size: 0.9rem;border-radius: 10px;background: #f5f5f5;color: #666;">
+                    <h5 style="font-weight: bold;">YT網址範例</h5>
+                    <hr />
+                    <p class="my-1" style="font-weight: bold;">* 點擊會帶入網址至上方欄位，即可看到示範結果。</p>
+                    <p class="my-1" style="font-weight: bold;">* 以下網址格式皆可。</p>
+                    <ul>
+                        <li><label>https://youtu.be/1-rD_vr_2xQ</label></li>
+                        <li><label>https://youtu.be/1-rD_vr_2xQ?t=1</label></li>
+                        <li><label>https://www.youtube.com/watch?v=1-rD_vr_2xQ</label></li>
+                        <li><label>https://www.youtube.com/watch?v=1-rD_vr_2xQ&t=4s</label></li>
+                        <li><label>https://www.youtube.com/watch?v=1-rD_vr_2xQ&list=PLCDQLFft8AGjYIpetpQ4ZeuJ7-I68qE6Y&index=1</label></li>
+                    </ul>
                 </div>
             </div>
         </div>

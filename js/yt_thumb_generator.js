@@ -156,6 +156,9 @@ $(document).ready(function () {
             console.log(maxresW + ' x ' + maxresH);
             $('#maxres-size').text(filessize + " size : " + maxresW + ' x ' + maxresH);
         };
+        
+        /*show hint*/
+        $("#result-hint").css("display","block");
     }
 
     /**產生圖片EVENT*/
@@ -173,6 +176,7 @@ $(document).ready(function () {
     /**RESET BTN*/
     $('#reset').on('click', function () {
         reset();
+        $("#result-hint").css("display","none");
     });
 
     /**欄位自動全選*/
