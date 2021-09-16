@@ -43,162 +43,165 @@ default thumbnail list:
     https://img.youtube.com/vi/<insert-youtube-video-id-here>/maxresdefault.jpg
     */
 
-$(document).ready(function () {
+    $(document).ready(function () {
 
-    /**重置*/
-    function reset() {
+        /**重置*/
+        function reset() {
 
-        $('input[type="text"], textarea').val("");
-        $('.result-area').css("display", "none");
-        $('.output-link').prop('href', "");
-        $('#files-type').val("webp");
-        $('#files-size').val("maxres");
-    }
-
-    /**取得封面圖片網址*/
-    function getImgURL(ytURL) {
-
-        if (!ytURL) {
-            return;
+            $('input[type="text"], textarea').val("");
+            $('.result-area').css("display", "none");
+            $('.output-link').prop('href', "");
+            $('#files-type').val("webp");
+            $('#files-size').val("maxres");
         }
 
+        /**取得封面圖片網址*/
+        function getImgURL(ytURL) {
 
-        let ytID;
-        let filestype = $('#files-type').val();
-        let filessize = $('#files-size').val();
-        let maxresURL;
-
-        console.log("YouTube URL: ", ytURL);
-
-        if (ytURL.includes("watch") && ytURL.includes("list")) {
-
-            /*LIST URL*/
-            console.log("LIST URL");
-
-            ytID = $('#yt-address').val().split('watch?v=')[1].split('&list')[0];
-
-            console.log("YouTube ID: ", ytID);
-
-        } else if (ytURL.includes("watch") && !ytURL.includes("list")) {
-
-            /*Normal URL*/
-            console.log("Normal URL");
-
-            if (ytURL.includes("&t=")) {
-                ytID = $('#yt-address').val().split('watch?v=')[1].split('&t=')[0];
-            } else {
-                ytID = $('#yt-address').val().split('watch?v=')[1];
+            if (!ytURL) {
+                return;
             }
 
 
-            console.log("YouTube ID: ", ytID);
+            let ytID;
+            let filestype = $('#files-type').val();
+            let filessize = $('#files-size').val();
+            let maxresURL;
 
-        } else if (ytURL.includes("youtu.be")) {
+            console.log("YouTube URL: ", ytURL);
 
-            /*Short URL*/
-            console.log("Short URL");
+            if (ytURL.includes("watch") && ytURL.includes("list")) {
 
-            if (ytURL.includes("?t=")) {
-                ytID = $('#yt-address').val().split('youtu.be/')[1].split('?t=')[0];
-            } else {
-                ytID = $('#yt-address').val().split('youtu.be/')[1];
+                /*LIST URL*/
+                console.log("LIST URL");
+
+                ytID = $('#yt-address').val().split('watch?v=')[1].split('&list')[0];
+
+                console.log("YouTube ID: ", ytID);
+
+            } else if (ytURL.includes("watch") && !ytURL.includes("list")) {
+
+                /*Normal URL*/
+                console.log("Normal URL");
+
+                if (ytURL.includes("&t=")) {
+                    ytID = $('#yt-address').val().split('watch?v=')[1].split('&t=')[0];
+                } else {
+                    ytID = $('#yt-address').val().split('watch?v=')[1];
+                }
+
+
+                console.log("YouTube ID: ", ytID);
+
+            } else if (ytURL.includes("youtu.be")) {
+
+                /*Short URL*/
+                console.log("Short URL");
+
+                if (ytURL.includes("?t=")) {
+                    ytID = $('#yt-address').val().split('youtu.be/')[1].split('?t=')[0];
+                } else {
+                    ytID = $('#yt-address').val().split('youtu.be/')[1];
+                }
+
+                console.log("YouTube ID: ", ytID);
+
             }
 
-            console.log("YouTube ID: ", ytID);
+            let urltype;
+            let sizetype;
+            if (filestype == "webp") {
+                urltype = "vi_webp";
+            } else if (filestype == "jpg") {
+                urltype = "vi";
+            }
 
+            switch (filessize) {
+                case "default":
+                    sizetype = "default";
+                    break;
+
+                case "hq":
+                    sizetype = "hqdefault";
+                    break;
+
+                case "mq":
+                    sizetype = "mqdefault";
+                    break;
+
+                case "sd":
+                    sizetype = "sddefault";
+                    break;
+
+                case "maxres":
+                    sizetype = "maxresdefault";
+                    break;
+
+                default:
+            }
+
+            maxresURL = "https://i.ytimg.com/" + urltype + "/" + ytID + "/" + sizetype + "." + filestype;
+
+
+            $('.result-area').css("display", "flex");
+            $('#output-maxres').val(maxresURL);
+            $('#output-link-maxres').prop('href', maxresURL);
+            $('#output-img-maxres').prop('src', maxresURL);
+
+            const img = new Image();
+            img.src = maxresURL;
+            img.onload = function () {
+                let maxresW = this.width;
+                let maxresH = this.height;
+                console.log(maxresW + ' x ' + maxresH);
+                $('#maxres-size').text(filessize + " size : " + maxresW + ' x ' + maxresH);
+            };
+
+            /*show hint*/
+            $("#result-hint").css("display", "block");
         }
 
-        let urltype;
-        let sizetype;
-        if (filestype == "webp") {
-            urltype = "vi_webp";
-        } else if (filestype == "jpg") {
-            urltype = "vi";
-        }
+        /**產生圖片EVENT*/
+        $('#ok').on('click', function () {
+            getImgURL($('#yt-address').val());
+        });
+        $('#files-type, #files-size').on("change", function () {
+            getImgURL($('#yt-address').val());
+        });
+        $('#example label').on('click', function () {
+            $('#yt-address').val($(this).text());
+            getImgURL($(this).text());
+        });
 
-        switch (filessize) {
-            case "default":
-                sizetype = "default";
-                break;
+        /**RESET BTN*/
+        $('#reset').on('click', function () {
+            reset();
+            $("#result-hint").css("display", "none");
+        });
 
-            case "hq":
-                sizetype = "hqdefault";
-                break;
+        /**欄位自動全選*/
+        $("input, textarea").blur(function () {
+            if ($(this).attr("data-selected-all")) {
+                $(this).removeAttr("data-selected-all");
+            }
+        });
+        $("input, textarea").click(function () {
+            if (!$(this).attr("data-selected-all")) {
+                try {
+                    $(this).selectionStart = 0;
+                    $(this).selectionEnd = $(this).value.length + 1;
+                    //add atribute allowing normal selecting post focus
+                    $(this).attr("data-selected-all", true);
+                } catch (err) {
+                    $(this).select();
+                    //add atribute allowing normal selecting post focus
+                    $(this).attr("data-selected-all", true);
+                }
+            }
+        });
 
-            case "mq":
-                sizetype = "mqdefault";
-                break;
 
-            case "sd":
-                sizetype = "sddefault";
-                break;
-
-            case "maxres":
-                sizetype = "maxresdefault";
-                break;
-
-            default:
-        }
-
-        maxresURL = "https://i.ytimg.com/" + urltype + "/" + ytID + "/" + sizetype + "." + filestype;
-
-
-        $('.result-area').css("display", "flex");
-        $('#output-maxres').val(maxresURL);
-        $('#output-link-maxres').prop('href', maxresURL);
-        $('#output-img-maxres').prop('src', maxresURL);
-
-        const img = new Image();
-        img.src = maxresURL;
-        img.onload = function () {
-            let maxresW = this.width;
-            let maxresH = this.height;
-            console.log(maxresW + ' x ' + maxresH);
-            $('#maxres-size').text(filessize + " size : " + maxresW + ' x ' + maxresH);
-        };
         
-        /*show hint*/
-        $("#result-hint").css("display","block");
-    }
-
-    /**產生圖片EVENT*/
-    $('#ok').on('click', function () {
-        getImgURL($('#yt-address').val());
-    });
-    $('#files-type, #files-size').on("change", function () {
-        getImgURL($('#yt-address').val());
-    });
-    $('#example label').on('click', function () {
-        $('#yt-address').val($(this).text());
-        getImgURL($(this).text());
-    });
-
-    /**RESET BTN*/
-    $('#reset').on('click', function () {
-        reset();
-        $("#result-hint").css("display","none");
-    });
-
-    /**欄位自動全選*/
-    $("input, textarea").blur(function () {
-        if ($(this).attr("data-selected-all")) {
-            $(this).removeAttr("data-selected-all");
-        }
-    });
-    $("input, textarea").click(function () {
-        if (!$(this).attr("data-selected-all")) {
-            try {
-                $(this).selectionStart = 0;
-                $(this).selectionEnd = $(this).value.length + 1;
-                //add atribute allowing normal selecting post focus
-                $(this).attr("data-selected-all", true);
-            } catch (err) {
-                $(this).select();
-                //add atribute allowing normal selecting post focus
-                $(this).attr("data-selected-all", true);
-            }
-        }
-    });
 
 
-});
+    });

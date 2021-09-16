@@ -12,18 +12,20 @@
     <script src="sweetalert2-10.16.7/dist/sweetalert2.all.js"></script>
     <!--common-->
 
-    <script src="js/yt_thumb_generator.js?version=2.0"></script>
+    <script src="js/yt_thumb_generator.js?version=2.0.1"></script>
 
     <title>YouTube封面下載工具</title>
 </head>
 <style>
     html {
         background: #d4abab;
+        height: 100%;
     }
 
     body {
         font-family: "微軟正黑體";
         background: none;
+        height: 100%;
     }
 
     input::placeholder,
@@ -75,10 +77,18 @@
         display: inline-block;
     }
 
+    .copyright {
+        background: none;
+        color: #6b6b6b;
+        text-align: center;
+        font-size: 8px;
+        border: none;
+    }
+
 </style>
 
 <body>
-    <div class="container mt-3">
+    <div class="container my-3">
         <div class="card" style="border-radius: 10px">
             <div class="card-body">
                 <h1 class="card-title mb-3" style="font-weight: bold">YouTube封面下載工具</h1>
@@ -145,12 +155,35 @@
                 </div>
             </div>
         </div>
+        <div class="copyright mt-3 py-2 card">
+            <span id='LastUpdateTime' ></span>
+        </div>
     </div>
+
 </body>
 
 </html>
 
 <script>
+    var lastModi = document.lastModified;
 
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear(),
+            hour = d.getHours(),
+            min = d.getMinutes(),
+            sec = d.getSeconds();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-') + " " + [hour, min, sec].join(':');
+    }
+    
+    $("#LastUpdateTime").html("最後更新: " + formatDate(lastModi));
 
 </script>
