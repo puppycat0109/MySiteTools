@@ -125,13 +125,16 @@ for(var i = 0; i < templist.length; i++ ){
    else if(templist[i].indexOf('dthumb-phinf.pstatic.net') >= 0){
         //過濾影片封面
    }
+   else if(templist[i].indexOf('gfmarket') >= 0){
+        //過濾貼圖
+   }
    else{
         result += templist[i] + "\r\n" ;
         count = count + 1;
    }
 }
-console.log("共 " + count + " 張");
-console.log(result);</pre>
+console.log(result);
+console.log("共 " + count + " 張");</pre>
                 </div>
                 <!--input-->
                 <div class="row col-8 g-2">
